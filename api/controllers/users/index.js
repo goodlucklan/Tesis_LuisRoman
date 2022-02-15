@@ -1,6 +1,7 @@
 const mongodb = require("../../database/index");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const moment = require('moment');
 
 const obtenerUsuario = async (req, res) => {
     try {
@@ -21,6 +22,7 @@ const obtenerUsuario = async (req, res) => {
         })
     }
 }
+
 const crearUsuario = async (req, res) => {
     try {
         const { first_name, last_name, email, password } = req.body;
@@ -53,7 +55,49 @@ const crearUsuario = async (req, res) => {
         console.log(error);
     }
 }
+
+const funciona = async (req, res) => {
+    let fecha = '1981-12-11T00:00:00.000Z';
+    res.status(200).send({
+        codRes: "00",
+        fecha: moment(fecha).format("YYYY-MM-DD")
+    })
+}
+
+const LoginUsuario = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!(email && password)) {
+            res.status(400).send("All input is required");
+        }
+        const query = {
+            email: email
+        }
+        const user = await mongodb.GET_ONE(query, "Users");
+        console.log("User", user);
+        if (user && (await bcrypt.compare(password, user.encryptedPassword))) {
+            // Create token
+            const token = jwt.sign(
+                { user_id: email },
+                process.env.TOKEN_KEY,
+                {
+                    expiresIn: "2h",
+                }
+            );
+            // save user token
+            user.token = token;
+            // user
+            return res.status(200).json(user);
+        }
+        res.status(400).send("Invalid Credentials");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = {
     obtenerUsuario,
-    crearUsuario
+    crearUsuario,
+    funciona,
+    LoginUsuario
 }
