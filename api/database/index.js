@@ -42,3 +42,29 @@ exports.INSERT_ONE = async (data, name_collection) => {
         console.log(error);
     }
 };
+
+exports.UPDATE_ONE = async (query, data, name_collection) => {
+    try {
+        log.info("update_mdb", query);
+
+        const client = await mongoClient.connect(uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+
+        const db = client.db(process.env.MDB_NAME);
+        const collection = db.collection(name_collection);
+
+        const result = await collection.updateOne(query, {
+            $set: {
+                ...data,
+                _updated: new Date()
+            }
+        });
+        client.close();
+        return result;
+    } catch (error) {
+        console.log("error");
+        console.log(error);
+    }
+};
