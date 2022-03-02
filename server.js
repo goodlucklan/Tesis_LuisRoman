@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: false }))
 
 
 const { obtenerUsuario, crearUsuario, funciona, LoginUsuario } = require("./api/controllers/users")
-const { getProducts } = require("./api/controllers/products")
+const { getProducts, addProduct } = require("./api/controllers/products")
 const auth = require("./api/utils/auth")
 
 app.set("port", process.env.PORT);
@@ -22,7 +22,8 @@ app.post("/addUser", crearUsuario);
 app.get("/moment", funciona);
 app.post("/loginUser", LoginUsuario);
 
-app.get("/productos", auth, getProducts)
+app.get("/productos", auth, getProducts);
+app.post("/addproduct", addProduct);
 
 app.listen(app.get("port"), app.get("host"), () => {
     console.log(`MS on http://${app.get("host")}:${app.get("port")}`);
