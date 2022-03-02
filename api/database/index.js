@@ -68,3 +68,21 @@ exports.UPDATE_ONE = async (query, data, name_collection) => {
         console.log(error);
     }
 };
+
+exports.GET_ALL = async (query, name_collection) => {
+    try {
+      const client = await mongoClient.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
+      console.log("query ", query);
+      const db = client.db(process.env.MDB_NAME);
+      const collection = db.collection(name_collection);
+      const result = await collection.find(query).toArray();
+      client.close();
+      return { codRes: result ? "00" : "01", result };
+    } catch (error) {
+      console.log("error");
+      console.log(error);
+    }
+  };
