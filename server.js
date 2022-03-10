@@ -22,7 +22,7 @@ app.post("/addUser", crearUsuario);
 app.get("/moment", funciona);
 app.post("/loginUser", LoginUsuario);
 
-app.get("/productos", auth, getProducts)
+app.get("/productos", getProducts)
 
 app.listen(app.get("port"), app.get("host"), () => {
     console.log(`MS on http://${app.get("host")}:${app.get("port")}`);
