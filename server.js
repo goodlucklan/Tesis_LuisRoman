@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
 
 
-const { obtenerUsuario, crearUsuario, funciona, LoginUsuario } = require("./api/controllers/users")
+const { obtenerUsuario, crearUsuario, funciona, LoginUsuario, getAllUsers } = require("./api/controllers/users")
 const { getProducts, addProduct } = require("./api/controllers/products")
 const auth = require("./api/utils/auth")
 
@@ -21,6 +21,7 @@ app.get("/obtenerData", obtenerUsuario);
 app.post("/addUser", crearUsuario);
 app.get("/moment", funciona);
 app.post("/loginUser", LoginUsuario);
+app.get("/usuarios", getAllUsers);
 
 app.get("/productos", getProducts);
 app.post("/addproduct", addProduct);

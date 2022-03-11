@@ -95,9 +95,28 @@ const LoginUsuario = async (req, res) => {
     }
 }
 
+const getAllUsers = async (req, res) => {
+  try {
+    const resultado = await mongodb.GET_ALL({}, "Users");
+    if (resultado.codRes === "00") {
+      console.log(resultado);
+      res.status(200).send({
+        codRes: "00",
+        message: resultado.result,
+      });
+    }
+  } catch (error) {
+    res.status(200).send({
+      codRes: "99",
+      response: "error al consultar",
+    });
+  }
+};
+
 module.exports = {
     obtenerUsuario,
     crearUsuario,
     funciona,
-    LoginUsuario
+    LoginUsuario,
+    getAllUsers
 }
