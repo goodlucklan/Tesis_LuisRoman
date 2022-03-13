@@ -99,7 +99,14 @@ const getAllUsers = async (req, res) => {
   try {
     const resultado = await mongodb.GET_ALL({}, "Users");
     if (resultado.codRes === "00") {
-      console.log(resultado);
+        const filter = resultado.result.map((x) => {
+            return {
+                "first_name" : x.first_name,
+                "last_name" : x.last_name,
+                "email" : x.email,
+            }
+        })
+      console.log(filter);
       res.status(200).send({
         codRes: "00",
         message: resultado.result,
